@@ -74,4 +74,22 @@ public class ImageController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @PutMapping("/image/{id}/update")
+    public ResponseEntity<?> updateImage(@PathVariable int id, @RequestPart Image image) {
+        Image result = imageService.updateImage(id, image);
+        if (null != result) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    @DeleteMapping("/image/{id}")
+    public ResponseEntity<?> deleteImage(@PathVariable int id) {
+        boolean result = imageService.deleteImage(id);
+        if (result) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
 }

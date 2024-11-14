@@ -47,7 +47,8 @@ public class ImageService {
         Image image = iImageRepository.findById(id).orElse(null);
         Users user = ((UsersPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
 
-        if (null == image || (image.isHidden() && image.getUser().getId() != user.getId())) {
+        if (null == image || (image.isHidden() && !image.getUser().equals(user))) {
+
             return null;
         }
 
@@ -61,7 +62,7 @@ public class ImageService {
         Image image = iImageRepository.findById(id).orElse(null);
         Users user = ((UsersPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
 
-        if (null == image || (image.isHidden() && image.getUser().getId() != user.getId())) {
+        if (null == image || (image.isHidden() && !image.getUser().equals(user))) {
             return null;
         }
 
@@ -91,5 +92,36 @@ public class ImageService {
         } catch (IOException exception) {
             return null;
         }
+    }
+
+    public Image updateImage(int id, Image image) {
+        Users user = ((UsersPrincipal)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        Image imageSaved = iImageRepository.findById(id).orElse(null);
+
+        if (null == imageSaved || !imageSaved.getUser().equals(user)) {
+            return null;
+        }
+
+        image.setPath(imageSaved.getPath());
+        image.setType(imageSaved.getType());
+
+        return iImageRepository.save(image);
+    }
+
+    public boolean deleteImage(int id) {
+        Users user = ((UsersPrincipal)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        Image image = iImageRepository.findById(id).orElse(null);
+        if (null == image || !image.getUser().equals(user)) {
+            return false;
+        }
+
+        File file = new File(image.getPath());
+        boolean deleted = file.delete();
+        if (!deleted) {
+            return false;
+        }
+
+        iImageRepository.deleteById(id);
+        return true;
     }
 }
