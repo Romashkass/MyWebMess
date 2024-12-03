@@ -5,22 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Image {
+public class PictureComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @ManyToOne
     private Users user;
-    private String path;
-    private String type;
+    @ManyToOne
+    private Picture picture;
 
-    private String name;
-    private String description;
-    private boolean hidden;
-
+    private String text;
+    private Date postDate;
 }

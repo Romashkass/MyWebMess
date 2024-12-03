@@ -1,5 +1,6 @@
 package com.example.MyWebMess.service;
 
+import com.example.MyWebMess.exception.NotFoundException;
 import com.example.MyWebMess.model.Users;
 import com.example.MyWebMess.repository.IUsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +33,9 @@ public class UsersService {
             return jwtService.generateToken(user.getUsername());
         }
         return "Failure";
+    }
+
+    public List<Users> getUsersList() {
+        return iUsersRepository.findAll();
     }
 }

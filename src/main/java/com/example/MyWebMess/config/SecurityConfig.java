@@ -33,7 +33,7 @@ public class SecurityConfig {
     public final MyUserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
 
-    private final static String FRONTEND_LOCALHOST = "http://localhost:5173/";
+    private final static String FRONTEND_LOCALHOST = "http://localhost:4200/";
 
     public CorsConfigurationSource corsConfiguration() {
         CorsConfiguration corsConfig = new CorsConfiguration();
@@ -70,7 +70,7 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfiguration()))
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("register", "login").permitAll()
+                        .requestMatchers("api/register", "api/login").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
